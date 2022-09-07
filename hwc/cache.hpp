@@ -12,6 +12,7 @@ template <typename DataT, typename KeyT> struct cache_t {
 	std::vector<DataT> vector;
 	typedef DataT (*getfile_t)(KeyT);
 	getfile_t getfile;
+	
 	cache_t (int cap, getfile_t gf) : capacity(cap), getfile(gf) {}
 
 	bool isfull() const {
