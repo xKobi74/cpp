@@ -14,7 +14,7 @@ int main() {
 
     return 0;
 }
-*/
+
 
 #include "fifo.hpp"
 
@@ -32,5 +32,26 @@ int main() {
         lru.delete_el(x);
         lru.print();
     }
+    return 0;
+}
+*/
+
+#include "cache.hpp"
+
+int getfile(int key) {
+    return key;
+}
+
+int main() {
+    int n;
+    cache::cache_t<int, int> cache(3, getfile);
+    cache.add_new_el(1);
+    cache.print();
+    int ind = cache.add_new_el(2);
+    cache.print();
+    cache.add_new_el(3);
+    cache.print();
+    cache.rewrite_el(4, ind);
+    cache.print();
     return 0;
 }
