@@ -3,6 +3,7 @@
 #include <list>
 #include <unordered_map>
 #include <assert.h>
+#include <cstdio>
 
 namespace cache {
 
