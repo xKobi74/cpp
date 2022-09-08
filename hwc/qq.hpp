@@ -17,20 +17,25 @@ template <typename DataT, typename KeyT> struct qq_t {
     struct info_t {
         states_t state;
         int index;
-    }
+    };
     std::unordered_map<KeyT, info_t> hashmap;
     typedef DataT (*getfile_t)(KeyT);
-
-    2q_t(int cap, int nothing, getfile_t gf) {
+    fifo_alg_t<KeyT> in;
+    fifo_alg_t<KeyT> out;
+    lru_alg_t<KeyT> lru;
+    cache_t<DataT, KeyT> cache;
+    
+    qq_t(int cap, int noth, getfile_t gf) : cache(cap, gf), in(cap - (cap  * 3 + 9) / 10, noth, false), out(2 * cap, noth, true), lru((cap  * 3 + 9) / 10, noth) {
         assert(cap > 1);
         nothing = noth;
-        cache_t<DataT, KeyT> cache(cap, gf);
-        int lrucap = (cap  * 3 + 9) / 10;
-        int incap = cap - lrucap;
-        int out = 2 * cap;
-        fifo_alg_t<KeyT> in(incap, noth, false);
-        fifo_alg_t<KeyT> out(outcap, noth, true);
-        lru_alg_t<KeyT> lru(lrucap, noth);
+    }
+
+    void print() {
+        printf("------QQ------\n");
+        in.print();
+        out.print();
+        lru.print();
+        printf("--------------\n");
     }
 
 };
