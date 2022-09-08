@@ -38,6 +38,46 @@ template <typename DataT, typename KeyT> struct qq_t {
         printf("--------------\n");
     }
 
+    KeyT *update(KeyT key) {
+        auto ptr = hashmap.find(key);
+        KeyT extrael;
+        int ind;
+        if (ptr == hashmap.end()) {
+            extrael = in.update(key);
+            if (extrael == nothing)
+                ind = cache.add_new_el(key);
+            else {
+                ind = hashmap[extrael].index;
+                hashmap[extrael].state = OUT;
+                cache.rewrite_el(key, ind);
+                KeyT newextrael = out.update(extrael);
+                if (newextrael != nothing)
+                    hashmap.erase(newextrael);
+            }
+            hashmap[key] = info_t {IN, ind};
+            return cache.get_data_ptr(ind);
+        }
+        //else
+        info_t info = ptr->second;
+        if (info.state == IN)
+            return cache.get_data_ptr(info.index);
+        if (info.state == OUT) {
+            out.delete_el(key);
+            extrael = lru.update(key);
+            if (extrael == nothing)
+                ind = cache.add_new_el(key);
+            if (extrael != nothing) {
+                ind = hashmap[extrael].index;
+                hashmap.erase(extrael);
+                cache.rewrite_el(key, ind);
+            }
+            hashmap[key] = info_t {LRU, ind};
+            return cache.get_data_ptr(ind);
+        }
+        // if (info.state == LRU)
+        lru.update(key);
+        return cache.get_data_ptr(info.index);
+    }
 };
 
 } //end of namespace cache

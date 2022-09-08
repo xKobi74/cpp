@@ -33,10 +33,13 @@ template <typename DataT, typename KeyT> struct cache_t {
 	}
 
 	void rewrite_el(KeyT key, int ind) {
-		assert(isfull() == true);
+		assert(ind < vector.size());
 		vector[ind] = getfile(key);
 	} 
 
+	KeyT *get_data_ptr(int ind) {
+		return &*(vector.begin() + ind);
+	}
 };
 
 } //end of namespace cache
