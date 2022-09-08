@@ -17,6 +17,8 @@ int main() {
     qq.print();
     printf("%d\n", *(qq.update(1)));
     qq.print();
+    printf("%d\n", *(qq.update(1)));
+    qq.print();
     for(int i = 10; i < 30; ++i) {
         printf("%d\n", *(qq.update(i)));
         qq.print();
@@ -31,5 +33,7 @@ int main() {
     qq.print();
     printf("%d\n", *(qq.update(16)));
     qq.print();
+
+    printf("Hits: %d\n", qq.hitscount());
     return 0;
 }

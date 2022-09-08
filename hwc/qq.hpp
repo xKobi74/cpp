@@ -24,10 +24,11 @@ template <typename DataT, typename KeyT> struct qq_t {
     fifo_alg_t<KeyT> out;
     lru_alg_t<KeyT> lru;
     cache_t<DataT, KeyT> cache;
-    
+    int hits;
     qq_t(int cap, int noth, getfile_t gf) : cache(cap, gf), in(cap - (cap  * 3 + 9) / 10, noth, false), out(2 * cap, noth, true), lru((cap  * 3 + 9) / 10, noth) {
         assert(cap > 1);
         nothing = noth;
+        hits = 0;
     }
 
     void print() {
@@ -59,8 +60,10 @@ template <typename DataT, typename KeyT> struct qq_t {
         }
         //else
         info_t info = ptr->second;
-        if (info.state == IN)
+        if (info.state == IN) {
+            ++hits;
             return cache.get_data_ptr(info.index);
+        }
         if (info.state == OUT) {
             out.delete_el(key);
             extrael = lru.update(key);
@@ -75,8 +78,12 @@ template <typename DataT, typename KeyT> struct qq_t {
             return cache.get_data_ptr(ind);
         }
         // if (info.state == LRU)
+        ++hits;
         lru.update(key);
         return cache.get_data_ptr(info.index);
+    }
+    int hitscount() {
+        return hits;
     }
 };
 
