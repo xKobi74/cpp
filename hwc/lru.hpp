@@ -16,7 +16,7 @@ template <typename KeyT> struct lru_alg_t {
 
     lru_alg_t(int cap, KeyT noth) : capacity(cap), nothing(noth) {}
 
-    void print() {
+    void printint() {
         printf("LRU: ");
         for (ListIt it = list.begin(); it != list.end(); ++it)
             printf("%d ", *it);

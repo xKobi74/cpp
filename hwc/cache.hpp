@@ -37,7 +37,7 @@ template <typename DataT, typename KeyT> struct cache_t {
 		vector[ind] = getfile(key);
 	} 
 
-	KeyT *get_data_ptr(int ind) {
+	DataT *get_data_ptr(int ind) {
 		return &*(vector.begin() + ind);
 	}
 };

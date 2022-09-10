@@ -1,39 +1,39 @@
 #include <cstdio>
 
 #include "qq.hpp"
+#include "perf.hpp"
 
 int getfile(int key) {
     return key;
 }
 
-int main() {
-    cache::qq_t<int, int> qq(10, -1, getfile);
-    qq.print();
-    for(int i = 0; i < 10; ++i) {
-        printf("%d\n", *(qq.update(i)));
-        qq.print();
+void input(std::vector<int> *m) {
+    int n, x;
+    int k = scanf("%d", &n);
+    if (k != 1)
+        abort();
+    assert(n > 1);
+    for (int i = 0; i < n; ++i) {
+        k += scanf("%d", &x);
+        m->push_back(x);
     }
-    printf("%d\n", *(qq.update(7)));
-    qq.print();
-    printf("%d\n", *(qq.update(1)));
-    qq.print();
-    printf("%d\n", *(qq.update(1)));
-    qq.print();
-    for(int i = 10; i < 30; ++i) {
-        printf("%d\n", *(qq.update(i)));
-        qq.print();
-    }
-    for(int i = 10; i < 20; ++i) {
-        printf("%d\n", *(qq.update(i)));
-        qq.print();
-    }
-    printf("%d\n", *(qq.update(18)));
-    qq.print();
-    printf("%d\n", *(qq.update(18)));
-    qq.print();
-    printf("%d\n", *(qq.update(16)));
-    qq.print();
+    if (k != n + 1)
+        abort();
+}
 
-    printf("Hits: %d\n", qq.hitscount());
+int main() {
+    std::vector<int> in;
+    input(&in);
+    int cachesize = (in.size() + 9) / 10;
+    cache::qq_t<int, int> qq(cachesize, -1, getfile);
+    cache::perf_alg_t<int> perf(cachesize, &in);
+
+    for (auto it = in.begin(); it != in.end(); ++it) {
+        qq.update(*it);
+        perf.update(*it);
+    }
+
+    printf("QQ hits: %d\n", qq.hitscount());
+    printf("Perf hits: %d\n", perf.hitscount());
     return 0;
 }

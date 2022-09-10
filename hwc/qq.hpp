@@ -31,15 +31,15 @@ template <typename DataT, typename KeyT> struct qq_t {
         hits = 0;
     }
 
-    void print() {
+    void printint() {
         printf("------QQ------\n");
-        in.print();
-        out.print();
-        lru.print();
+        in.printint();
+        out.printint();
+        lru.printint();
         printf("--------------\n");
     }
 
-    KeyT *update(KeyT key) {
+    DataT *update(KeyT key) {
         auto ptr = hashmap.find(key);
         KeyT extrael;
         int ind;
