@@ -17,7 +17,7 @@ template <typename KeyT> struct fifo_alg_t {
 
 	fifo_alg_t(int cap, KeyT noth, bool fl = false) : capacity(cap), nothing(noth), sdfl(fl) {}
 
-	void print() {
+	void printint() {
 		printf("FIFO: ");
 		for (ListIt it = list.begin(); it != list.end(); ++it)
 			printf("%d ", *it);
@@ -50,7 +50,7 @@ template <typename KeyT> struct fifo_alg_t {
 		if (isfull()) {
 			KeyT extrael = list.back();
 			list.pop_back();
-			hashmap.erase(key);
+			hashmap.erase(extrael);
 			add_new_el(key);
 			return extrael;
 		}
