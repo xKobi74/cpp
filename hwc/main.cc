@@ -27,7 +27,7 @@ int main() {
     int cachesize = (in.size() + 9) / 10;
     cache::qq_t<int, int> qq(cachesize, -1, getfile);
     cache::perf_alg_t<int> perf(cachesize, &in);
-
+    
     for (auto it = in.begin(); it != in.end(); ++it) {
         qq.update(*it);
         perf.update(*it);
