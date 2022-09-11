@@ -30,7 +30,7 @@ template <typename KeyT> struct perf_alg_t {
 		}
 	}
 
-	bool isfull() {
+	bool isfull() const {
 		return set.size() == capacity;
 	}
 
@@ -61,7 +61,7 @@ template <typename KeyT> struct perf_alg_t {
 		set.insert(key);
 	}
 
-	int hitscount() {
+	int hitscount() const {
 		return hits;
 	}
 };

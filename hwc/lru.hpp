@@ -16,11 +16,11 @@ template <typename KeyT> struct lru_alg_t {
 
     lru_alg_t(int cap, KeyT noth) : capacity(cap), nothing(noth) {}
 
-    void printint() {
-        printf("LRU: ");
+    void print() {
+        std::cout << "LRU: ";
         for (ListIt it = list.begin(); it != list.end(); ++it)
-            printf("%d ", *it);
-        printf("\n");
+            std::cout << *it;
+        std::cout << "\n";
     }
 
     bool isfull() const {

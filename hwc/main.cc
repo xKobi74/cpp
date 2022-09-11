@@ -7,9 +7,12 @@ int getfile(int key) {
     return key;
 }
 
-void input(std::vector<int> *m) {
+void input(int *size, std::vector<int> *m) {
     int n, x;
-    int k = scanf("%d", &n);
+    int k = scanf("%d", size);
+    if (k != 1)
+        abort();
+    k = scanf("%d", &n);
     if (k != 1)
         abort();
     assert(n > 1);
@@ -22,19 +25,22 @@ void input(std::vector<int> *m) {
 }
 
 int main() {
+    int cachesize;
     std::vector<int> in;
-    input(&in);
-    int cachesize = (in.size() + 9) / 10;
+    input(&cachesize, &in);
     if (cachesize < 2)
         cachesize = 2;
-    cache::qq_t<int, int> qq(cachesize, -1, getfile);
+    int lrucap = (cachesize  * 3 + 9) / 10;
+    int incap = cachesize - lrucap;
+    int outcap = 2 * cachesize;
+    cache::qq_t<int, int> qq(incap, lrucap, outcap, -1, getfile);
     cache::perf_alg_t<int> perf(cachesize, &in);
     
     for (auto it = in.begin(); it != in.end(); ++it) {
         qq.update(*it);
         perf.update(*it);
     }
-
+    
     printf("QQ hits: %d\n", qq.hitscount());
     printf("Perf hits: %d\n", perf.hitscount());
     return 0;

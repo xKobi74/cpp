@@ -2,7 +2,7 @@
 
 #include <unordered_map>
 #include <assert.h>
-#include <cstdio>
+#include <iostream>
 
 #include  "cache.hpp"
 #include  "fifo.hpp"
@@ -25,18 +25,18 @@ template <typename DataT, typename KeyT> struct qq_t {
     lru_alg_t<KeyT> lru;
     cache_t<DataT, KeyT> cache;
     int hits;
-    qq_t(int cap, int noth, getfile_t gf) : cache(cap, gf), in(cap - (cap  * 3 + 9) / 10, noth, false), out(2 * cap, noth, true), lru((cap  * 3 + 9) / 10, noth) {
+    qq_t(int incap, int lrucap, int outcap, int noth, getfile_t gf) : cache(incap + lrucap, gf), in(incap, noth, false), out(outcap, noth, true), lru(lrucap, noth) {
         assert(cap > 1);
         nothing = noth;
         hits = 0;
     }
 
-    void printint() {
-        printf("------QQ------\n");
-        in.printint();
-        out.printint();
-        lru.printint();
-        printf("--------------\n");
+    void print() {
+        std::cout << "------QQ------\n";
+        in.print();
+        out.print();
+        lru.print();
+        std::cout << "--------------\n";
     }
 
     DataT *update(KeyT key) {
@@ -82,7 +82,7 @@ template <typename DataT, typename KeyT> struct qq_t {
         lru.update(key);
         return cache.get_data_ptr(info.index);
     }
-    int hitscount() {
+    int hitscount() const {
         return hits;
     }
 };

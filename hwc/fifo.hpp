@@ -3,7 +3,7 @@
 #include <list>
 #include <unordered_map>
 #include <assert.h>
-#include <cstdio>
+#include <iostream>
 
 namespace cache {
 
@@ -17,11 +17,11 @@ template <typename KeyT> struct fifo_alg_t {
 
 	fifo_alg_t(int cap, KeyT noth, bool fl = false) : capacity(cap), nothing(noth), sdfl(fl) {}
 
-	void printint() {
-		printf("FIFO: ");
+	void print() {
+		std::cout << "FIFO: ";
 		for (ListIt it = list.begin(); it != list.end(); ++it)
-			printf("%d ", *it);
-		printf("\n");
+			std::cout << *it;
+		std::cout << "\n";
 	}
 
 	bool isfull() const {

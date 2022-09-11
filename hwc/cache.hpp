@@ -20,10 +20,10 @@ template <typename DataT, typename KeyT> struct cache_t {
 	}
 
 	void print() {
-		printf("Cache: ");
+		std::cout << "Cache: ";
 		for(VectorIt it = vector.begin(); it != vector.end(); ++it) 
-			printf("%d ", *it);
-		printf("\n");
+			std::cout << *it;
+		std::cout << "\n";
 	}
 
 	int add_new_el(KeyT key) {
