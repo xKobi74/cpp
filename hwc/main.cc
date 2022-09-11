@@ -25,6 +25,8 @@ int main() {
     std::vector<int> in;
     input(&in);
     int cachesize = (in.size() + 9) / 10;
+    if (cachesize < 2)
+        cachesize = 2;
     cache::qq_t<int, int> qq(cachesize, -1, getfile);
     cache::perf_alg_t<int> perf(cachesize, &in);
     
