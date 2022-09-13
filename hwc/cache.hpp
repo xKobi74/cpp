@@ -9,6 +9,7 @@ namespace cache {
 template <typename DataT, typename KeyT> struct cache_t {
 	int capacity;
 	using VectorIt = typename std::vector<DataT>::iterator;
+    using constVectorIt = typename std::vector<DataT>::const_iterator;
 	std::vector<DataT> vector;
 	typedef DataT (*getfile_t)(KeyT);
 	getfile_t getfile;
@@ -19,9 +20,9 @@ template <typename DataT, typename KeyT> struct cache_t {
 		return vector.size() == capacity;
 	}
 
-	void print() {
+	void print() const {
 		std::cout << "Cache: ";
-		for(VectorIt it = vector.begin(); it != vector.end(); ++it) 
+		for(constVectorIt it = vector.begin(); it != vector.end(); ++it) 
 			std::cout << *it;
 		std::cout << "\n";
 	}
@@ -37,8 +38,8 @@ template <typename DataT, typename KeyT> struct cache_t {
 		vector[ind] = getfile(key);
 	} 
 
-	DataT *get_data_ptr(int ind) {
-		return &*(vector.begin() + ind);
+	DataT const *get_data_ptr(int ind) const {
+		return &(*(vector.begin() + ind));
 	}
 };
 

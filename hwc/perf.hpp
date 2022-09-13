@@ -14,19 +14,13 @@ template <typename KeyT> struct perf_alg_t {
 	std::unordered_map<KeyT, std::queue<KeyT>> hashmap;
 	int hits;
 
-	perf_alg_t(int cap, std::vector<KeyT> *inputptr) : capacity(cap), hits(0) {
+	perf_alg_t(int cap, std::vector<KeyT> &input) : capacity(cap), hits(0) {
 		assert(cap > 0);
-		auto input = *inputptr;
-		requestscount = input.size();
-		auto ptr = hashmap.end();
+		int requestscount = input.size();
 		int key;
 		for (int i = 0; i < requestscount; ++i) {
 			key = input[i];
-			ptr = hashmap.find(key);
-			if (ptr == hashmap.end()) 
-				hashmap[key].push(key);
-			else 
-				(ptr->second).push(key);
+			hashmap[key].push(i);
 		}
 	}
 
@@ -34,11 +28,12 @@ template <typename KeyT> struct perf_alg_t {
 		return set.size() == capacity;
 	}
 
-	KeyT nextplace(KeyT key) {
+	KeyT nextplace(KeyT const key) const {
 		assert(hashmap.find(key) != hashmap.end());
-		if (hashmap[key].empty())
+		auto q = hashmap.find(key)->second;
+		if (q.empty())
 			return requestscount + 1;
-		return hashmap[key].front();
+		return q.front();
 	}
 
 	void update(KeyT key) {
@@ -48,10 +43,16 @@ template <typename KeyT> struct perf_alg_t {
 			return;
 		}
 		if (isfull()) {
-			KeyT max = *(set.begin());
-			for (auto it = ++(set.begin()); it != set.end(); ++it)
-				if (nextplace(*it) > nextplace(max))
-					max = *it;
+			KeyT max = *(set.begin()), el;
+			int imax = nextplace(max), iit;
+			for (auto it = ++(set.begin()); it != set.end(); ++it) {
+				el = *it;
+				iit = nextplace(el);
+				if (iit > imax) {
+					imax = iit;
+					max = el;
+				}
+			}
 			if (max == key) {
 				++hits;
 				return;

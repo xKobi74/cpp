@@ -11,14 +11,15 @@ template <typename KeyT> struct lru_alg_t {
     int capacity;
     KeyT nothing;
     using ListIt = typename std::list<KeyT>::iterator;
+    using constListIt = typename std::list<KeyT>::const_iterator;
     std::list<KeyT> list;
     std::unordered_map<KeyT, ListIt> hashmap;
 
     lru_alg_t(int cap, KeyT noth) : capacity(cap), nothing(noth) {}
 
-    void print() {
+    void print() const {
         std::cout << "LRU: ";
-        for (ListIt it = list.begin(); it != list.end(); ++it)
+        for (constListIt it = list.begin(); it != list.end(); ++it)
             std::cout << *it;
         std::cout << "\n";
     }

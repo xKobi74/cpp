@@ -11,15 +11,16 @@ template <typename KeyT> struct fifo_alg_t {
 	int capacity;
 	KeyT nothing;
 	using ListIt = typename std::list<KeyT>::iterator;
+    using constListIt = typename std::list<KeyT>::const_iterator;
 	std::list<KeyT> list;
 	std::unordered_map<KeyT, ListIt> hashmap;
 	bool sdfl; //selective delete flag
 
 	fifo_alg_t(int cap, KeyT noth, bool fl = false) : capacity(cap), nothing(noth), sdfl(fl) {}
 
-	void print() {
+	void print() const {
 		std::cout << "FIFO: ";
-		for (ListIt it = list.begin(); it != list.end(); ++it)
+		for (constListIt it = list.begin(); it != list.end(); ++it)
 			std::cout << *it;
 		std::cout << "\n";
 	}

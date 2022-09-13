@@ -31,7 +31,7 @@ template <typename DataT, typename KeyT> struct qq_t {
         hits = 0;
     }
 
-    void print() {
+    void print() const {
         std::cout << "------QQ------\n";
         in.print();
         out.print();
@@ -39,7 +39,7 @@ template <typename DataT, typename KeyT> struct qq_t {
         std::cout << "--------------\n";
     }
 
-    DataT *update(KeyT key) {
+    DataT const *update(KeyT key) {
         auto ptr = hashmap.find(key);
         KeyT extrael;
         int ind;
