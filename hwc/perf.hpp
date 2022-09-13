@@ -27,9 +27,42 @@ template <typename KeyT> struct perf_alg_t {
 			return (this->ind) < (p.ind);
 		}
 	};
-	struct pair_t first, second; 
 
-	perf_alg_t(int cap, std::vector<KeyT> &input, KeyT noth) : capacity(cap), hits(0), first(0, noth), second(0, noth), nothing(noth) {
+	struct two_ordered_pairs_t {
+		struct pair_t first, second; 
+		KeyT nothing;
+		two_ordered_pairs_t(KeyT noth) : first(-1, noth), second(-1, noth), nothing(noth) {};
+		KeyT update(struct pair_t &pair) {
+			KeyT extrael = nothing;
+			if (second.key == nothing) {
+				if (first.key == nothing) 
+					first.equal(pair);
+				else {
+					if (first.less(pair)) {
+						second.equal(first);
+						first.equal(pair);
+					}
+					else if (second.less(pair))
+						second.equal(pair);
+				}
+			}
+			else {
+				extrael = second.key;
+				if (first.less(pair)) {
+					second.equal(first);
+					first.equal(pair);
+				}
+				else if (second.less(pair)) {
+					second.equal(pair);
+				}
+			}
+			return extrael;
+		}
+	};
+
+	struct two_ordered_pairs_t lasttwo;
+
+	perf_alg_t(int cap, std::vector<KeyT> &input, KeyT noth) : capacity(cap), hits(0), lasttwo(noth), nothing(noth) {
 		assert(cap > 1);
 		int requestscount = input.size();
 		int key;
@@ -60,35 +93,12 @@ template <typename KeyT> struct perf_alg_t {
 		int ind = nextplace(key);
 		struct pair_t pair(ind, key); 
 		if (isfull()) {
-			set.erase(first.key);
+			set.erase(lasttwo.update(pair));
 			set.insert(key);
-			if (second.less(pair))
-				first.equal(pair);
-			else {
-				first.equal(second);
-				second.equal(first);
-			}
-			return;
 		}
-		set.insert(key);
-		if (first.key == nothing)
-			first.equal(pair);
 		else {
-			if (second.key == nothing) {
-				if (first.less(pair)) {
-					second.equal(first);
-					first.equal(pair);
-				}
-				else
-					second.equal(pair);
-			}
-			if (first.less(pair)) {
-				second.equal(first);
-				first.equal(pair);
-			} 
-			else 
-				if (second.less(pair))
-					second.equal(pair);
+			set.insert(key);
+			lasttwo.update(pair);
 		}
 	}
 
