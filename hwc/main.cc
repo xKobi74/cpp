@@ -18,6 +18,12 @@ void input(int &size, std::vector<int> &m) {
     }
 }
 
+/*
+To run the perfect caching algorithm, use the command line argument "0 1", 
+for qq+perfect use "1 1" 
+and "1 0" or ""(nothing) for 2q
+*/
+
 int main(int argc, char *argv[], char *envp[]) {
     bool flqq = true, flperf = false;
     if (argc == 3) {
