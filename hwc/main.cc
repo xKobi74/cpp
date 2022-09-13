@@ -45,8 +45,9 @@ int main(int argc, char *argv[], char *envp[]) {
     if (flperf) cache::perf_alg_t<int> perf(cachesize, &in);
     #endif
 
-    cache::qq_t<int, int> qq(incap, lrucap, outcap, -1, getfile);
-    cache::perf_alg_t<int> perf(cachesize, in, -1);
+    int nothing = -1; // any unavailable value of key
+    cache::qq_t<int, int> qq(incap, lrucap, outcap, nothing, getfile);
+    cache::perf_alg_t<int> perf(cachesize, in, nothing);
     
     for (auto it = in.begin(); it != in.end(); ++it) {
         if (flqq) qq.update(*it);
