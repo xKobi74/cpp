@@ -91,15 +91,11 @@ template <typename KeyT> struct perf_alg_t {
 			return;
 		}
 		int ind = nextplace(key);
-		struct pair_t pair(ind, key); 
-		if (isfull()) {
-			set.erase(lasttwo.update(pair));
-			set.insert(key);
-		}
-		else {
-			set.insert(key);
-			lasttwo.update(pair);
-		}
+		struct pair_t pair(ind, key);
+		KeyT extrael = lasttwo.update(pair); 
+		if (isfull())
+			set.erase(extrael);
+		set.insert(key);
 	}
 
 	int hitscount() const {
