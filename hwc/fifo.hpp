@@ -7,7 +7,7 @@
 
 namespace cache {
 
-template <typename KeyT> struct fifo_alg_t {
+template <typename KeyT> class fifo_alg_t {
 	int capacity;
 	KeyT nothing;
 	using ListIt = typename std::list<KeyT>::iterator;
@@ -15,6 +15,8 @@ template <typename KeyT> struct fifo_alg_t {
 	std::list<KeyT> list;
 	std::unordered_map<KeyT, ListIt> hashmap;
 	bool sdfl; //selective delete flag
+
+public:
 
 	fifo_alg_t(int cap, KeyT noth, bool fl = false) : capacity(cap), nothing(noth), sdfl(fl) {}
 

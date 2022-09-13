@@ -10,7 +10,7 @@
 
 namespace cache {
 
-template <typename DataT, typename KeyT> struct qq_t {
+template <typename DataT, typename KeyT> class qq_t {
     int capacity;
     KeyT nothing;
     enum states_t {IN, OUT, LRU};
@@ -25,6 +25,8 @@ template <typename DataT, typename KeyT> struct qq_t {
     lru_alg_t<KeyT> lru;
     cache_t<DataT, KeyT> cache;
     int hits;
+
+public:
     qq_t(int incap, int lrucap, int outcap, int noth, getfile_t gf) : cache(incap + lrucap, gf), in(incap, noth, false), out(outcap, noth, true), lru(lrucap, noth) {
         assert(cap > 1);
         nothing = noth;

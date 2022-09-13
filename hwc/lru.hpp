@@ -7,7 +7,7 @@
 
 namespace cache {
 
-template <typename KeyT> struct lru_alg_t {
+template <typename KeyT> class lru_alg_t {
     int capacity;
     KeyT nothing;
     using ListIt = typename std::list<KeyT>::iterator;
@@ -15,6 +15,8 @@ template <typename KeyT> struct lru_alg_t {
     std::list<KeyT> list;
     std::unordered_map<KeyT, ListIt> hashmap;
 
+public:
+    
     lru_alg_t(int cap, KeyT noth) : capacity(cap), nothing(noth) {}
 
     void print() const {
