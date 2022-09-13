@@ -7,21 +7,15 @@ int getfile(int key) {
     return key;
 }
 
-void input(int *size, std::vector<int> *m) {
+void input(int &size, std::vector<int> &m) {
     int n, x;
-    int k = scanf("%d", size);
-    if (k != 1)
-        abort();
-    k = scanf("%d", &n);
-    if (k != 1)
-        abort();
+    std::cin >> size;
+    std::cin >> n; 
     assert(n > 1);
     for (int i = 0; i < n; ++i) {
-        k += scanf("%d", &x);
-        m->push_back(x);
+        std::cin >> x;
+        m.push_back(x);
     }
-    if (k != n + 1)
-        abort();
 }
 
 int main(int argc, char *argv[], char *envp[]) {
@@ -33,7 +27,7 @@ int main(int argc, char *argv[], char *envp[]) {
 
     int cachesize;
     std::vector<int> in;
-    input(&cachesize, &in);
+    input(cachesize, in);
     if (cachesize < 2)
         cachesize = 2;
     int lrucap = (cachesize  * 3 + 9) / 10;
@@ -46,7 +40,7 @@ int main(int argc, char *argv[], char *envp[]) {
     #endif
 
     cache::qq_t<int, int> qq(incap, lrucap, outcap, -1, getfile);
-    cache::perf_alg_t<int> perf(cachesize, in);
+    cache::perf_alg_t<int> perf(cachesize, in, -1);
     
     for (auto it = in.begin(); it != in.end(); ++it) {
         if (flqq) qq.update(*it);
