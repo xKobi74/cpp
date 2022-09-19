@@ -40,20 +40,25 @@ int main(int argc, char *argv[], char *envp[]) {
     int incap = cachesize - lrucap;
     int outcap = 2 * cachesize;
     
-    #if 0
-    if (flqq) cache::qq_t<int, int> qq(incap, lrucap, outcap, -1, getfile);
-    if (flperf) cache::perf_alg_t<int> perf(cachesize, &in);
-    #endif
-
     int nothing = -1; // any unavailable value of key
     cache::qq_t<int, int> qq(incap, lrucap, outcap, nothing, getfile);
-    cache::perf_alg_t<int> perf(cachesize, in);
+    cache::perf_alg_t<int> perf(cachesize, in, nothing);
     
+    int q1 = qq.hitscount(), p1 = perf.hitscount(), q2, p2, dq, dp;
     for (auto it = in.begin(); it != in.end(); ++it) {
         if (flqq) qq.update(*it);
         if (flperf) perf.update(*it);
+        #if 0
+        q2 = qq.hitscount(), p2 = perf.hitscount();
+        dq = q2 - q1;
+        dp = p2 - p1;
+        p1 = p2;
+        q1 = q2;
+        if (1) {
+            std::cout << *it << ": " << dq << " " << dp << "\n";
+        }
+        #endif
     }
-    qq.print();
     if (flqq) std::cout << qq.hitscount() << " ";
     if (flperf) std::cout << perf.hitscount();
     std::cout << "\n";

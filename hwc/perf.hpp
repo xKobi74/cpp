@@ -13,12 +13,13 @@ template <typename KeyT> class perf_alg_t {
 	std::set<KeyT> set;
 	std::unordered_map<KeyT, std::queue<KeyT>> hashmap;
 	int hits;
+	KeyT nothing;
 
 public:
 
-	perf_alg_t(int cap, std::vector<KeyT> &input) : capacity(cap), hits(0) {
+	perf_alg_t(int cap, std::vector<KeyT> &input, KeyT noth) : capacity(cap), hits(0), nothing(noth) {
 		assert(cap > 0);
-		int requestscount = input.size();
+		requestscount = input.size();
 		int key;
 		for (int i = 0; i < requestscount; ++i) {
 			key = input[i];
@@ -34,7 +35,7 @@ public:
 		assert(hashmap.find(key) != hashmap.end());
 		auto q = hashmap.find(key)->second;
 		if (q.empty())
-			return requestscount + 1;
+			return requestscount;
 		return q.front();
 	}
 
@@ -45,9 +46,9 @@ public:
 			return;
 		}
 		if (isfull()) {
-			KeyT max = *(set.begin()), el;
-			int imax = nextplace(max), iit;
-			for (auto it = ++(set.begin()); it != set.end(); ++it) {
+			KeyT max = nothing, el;
+			int imax = -1, iit;
+			for (auto it = set.begin(); it != set.end(); ++it) {
 				el = *it;
 				iit = nextplace(el);
 				if (iit > imax) {
@@ -62,6 +63,13 @@ public:
 
 	int hitscount() const {
 		return hits;
+	}
+
+	void print() const {
+		std::cout << "SET: ";
+		for (auto it = set.begin(); it != set.end(); ++it)
+			std::cout << *it << "(" << nextplace(*it) << ")" << " ";
+		std::cout << "\n";
 	}
 };
 
