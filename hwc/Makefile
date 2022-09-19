@@ -1,5 +1,8 @@
+CXX ?= g++
+CXXFLAGS ?= -O2 -DNDEBUG
+
 compile:
-	g++ main.cc -o a.out -O2 -DNDEBUG
+	$(CXX) main.cc -o a.out $(CXXFLAGS)
 testq: compile
 	./a.out 1 0 < test2.txt
 testp: compile
