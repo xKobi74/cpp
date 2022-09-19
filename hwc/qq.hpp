@@ -28,7 +28,7 @@ template <typename DataT, typename KeyT> class qq_t {
 
 public:
     qq_t(int incap, int lrucap, int outcap, int noth, getfile_t gf) : cache(incap + lrucap, gf), in(incap, noth, false), out(outcap, noth, true), lru(lrucap, noth) {
-        assert(cap > 1);
+        assert(incap > 0 && lrucap > 0 && outcap > 0);
         nothing = noth;
         hits = 0;
     }

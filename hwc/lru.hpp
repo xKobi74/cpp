@@ -22,7 +22,7 @@ public:
     void print() const {
         std::cout << "LRU: ";
         for (constListIt it = list.begin(); it != list.end(); ++it)
-            std::cout << *it;
+            std::cout << *it << " ";
         std::cout << "\n";
     }
 

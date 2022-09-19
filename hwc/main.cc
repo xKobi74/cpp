@@ -47,13 +47,13 @@ int main(int argc, char *argv[], char *envp[]) {
 
     int nothing = -1; // any unavailable value of key
     cache::qq_t<int, int> qq(incap, lrucap, outcap, nothing, getfile);
-    cache::perf_alg_t<int> perf(cachesize, in, nothing);
+    cache::perf_alg_t<int> perf(cachesize, in);
     
     for (auto it = in.begin(); it != in.end(); ++it) {
         if (flqq) qq.update(*it);
         if (flperf) perf.update(*it);
     }
-    
+    qq.print();
     if (flqq) std::cout << qq.hitscount() << " ";
     if (flperf) std::cout << perf.hitscount();
     std::cout << "\n";
