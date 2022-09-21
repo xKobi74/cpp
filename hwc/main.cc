@@ -18,19 +18,14 @@ void input(int &size, std::vector<int> &m) {
     }
 }
 
-/*
-To run the perfect caching algorithm, use the command line argument "0 1", 
-for qq+perfect use "1 1" 
-and "1 0" or ""(nothing) for 2q
-*/
-
-int main(int argc, char *argv[], char *envp[]) {
-    bool flqq = true, flperf = false;
-    if (argc == 3) {
-        flqq = (*argv[1]) == '1';
-        flperf = (*argv[2]) == '1';
-    }
-
+int main() {
+    bool flqq = false, flperf = false;
+    #ifdef QQ
+        flqq = true;
+    #endif
+    #ifdef PERF
+        flperf = true;
+    #endif    
     int cachesize;
     std::vector<int> in;
     input(cachesize, in);
@@ -48,16 +43,6 @@ int main(int argc, char *argv[], char *envp[]) {
     for (auto it = in.begin(); it != in.end(); ++it) {
         if (flqq) qq.update(*it);
         if (flperf) perf.update(*it);
-        #if 0
-        q2 = qq.hitscount(), p2 = perf.hitscount();
-        dq = q2 - q1;
-        dp = p2 - p1;
-        p1 = p2;
-        q1 = q2;
-        if (1) {
-            std::cout << *it << ": " << dq << " " << dp << "\n";
-        }
-        #endif
     }
     if (flqq) std::cout << qq.hitscount() << " ";
     if (flperf) std::cout << perf.hitscount();
