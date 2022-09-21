@@ -39,7 +39,6 @@ int main() {
     cache::qq_t<int, int> qq(incap, lrucap, outcap, nothing, getfile);
     cache::perf_alg_t<int> perf(cachesize, in, nothing);
     
-    int q1 = qq.hitscount(), p1 = perf.hitscount(), q2, p2, dq, dp;
     for (auto it = in.begin(); it != in.end(); ++it) {
         if (flqq) qq.update(*it);
         if (flperf) perf.update(*it);

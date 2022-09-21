@@ -34,3 +34,11 @@ foreach(EX IN LISTS QQ_EX PERF_EX ALL_EX)
 	target_compile_options (${EX} PRIVATE ${COMPILE_SETTINGS} ${ADDITIONAL})
 
 endforeach()
+
+set(TEST test.out)
+set(TEST_SR source/tester.cc)
+
+add_executable(${TEST} ${TEST_SR})
+target_include_directories (${TEST} PRIVATE ${INCLUDE})
+target_link_libraries(${TEST} gtest gmock pthread)
+target_compile_options (${TEST} PRIVATE ${COMPILE_SETTINGS})
