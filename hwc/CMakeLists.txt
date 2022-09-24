@@ -1,10 +1,6 @@
 cmake_minimum_required (VERSION 3.16)
 project ("HWC" VERSION 1.0 LANGUAGES CXX) 
 
-set(QQ_EX qq.out)
-set(PERF_EX perf.out)
-set(ALL_EX all.out)
-
 set (INCLUDE 
     include
 )
@@ -18,21 +14,29 @@ set (COMPILE_SETTINGS
     -DNDEBUG
 )
 
-foreach(EX IN LISTS QQ_EX PERF_EX ALL_EX)
+set (OUTS
+  qq.out
+  perf.out
+  all.out
+)
 
-	add_executable (${EX} ${SOURCES})
-	target_include_directories (${EX} PRIVATE ${INCLUDE})
-	if (EX STREQUAL QQ_EX)
-		set(ADDITIONAL -DQQ)
-	endif()
-	if (EX STREQUAL PERF_EX)
-		set(ADDITIONAL -DPERF)
-	endif()
-	if (EX STREQUAL ALL_EX)
-		set(ADDITIONAL -DQQ -DPERF)
-	endif()
-	target_compile_options (${EX} PRIVATE ${COMPILE_SETTINGS} ${ADDITIONAL})
+set (OPTS
+  -DQQ
+  -DPERF
+  -DQQ -DPERF
+)
 
+list(LENGTH OUTS len1)
+math(EXPR len2 "${len1} - 1")
+
+foreach(val RANGE ${len2})
+  list(GET OUTS ${val} EX)
+  list(GET OPTS ${val} OPT)
+  message(STATUS "${EX}  ${OPT}")
+  add_executable (${EX} ${SOURCES})
+  target_include_directories (${EX} PRIVATE ${INCLUDE})
+  set(ADDITIONAL ${OPT})
+  target_compile_options (${EX} PRIVATE ${COMPILE_SETTINGS} ${ADDITIONAL})
 endforeach()
 
 set(TEST test.out)
