@@ -65,24 +65,30 @@ public:
 		}
 	}
 
-	void delete_extra_element() {
+	bool delete_extra_element(pair_t &pair) {
 		if (isfull()) {
-			pair_t extrapairptr = *setp.rbegin(); 
-			set.erase(extrapairptr.key);
-			setp.erase(extrapairptr);
+			pair_t extrapair = *setp.rbegin();
+			if (extrapair.ind < pair.ind) {
+				return false;
+			} 
+			set.erase(extrapair.key);
+			setp.erase(extrapair);
+			return true;
 		}
+		return true;
 	}
 
-	void add_key_info(KeyT key) {
-		struct pair_t pair(key, nextplace(key));
-		set.insert(key);
+	void add_key_info(pair_t &pair) {
+		set.insert(pair.key);
 		setp.insert(pair);
 	}
 
 	void update(KeyT key) {
 		delete_key_previos_info(key);
-		delete_extra_element();
-		add_key_info(key);
+		struct pair_t pair(key, nextplace(key));
+		bool needwriting = delete_extra_element(pair);
+		if (needwriting)
+			add_key_info(pair);
 	}
 
 	int hitscount() const {

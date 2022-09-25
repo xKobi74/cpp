@@ -66,7 +66,7 @@ TEST(QQ, SmallCache) {
 }
 
 TEST(PERF, SmallCache) {
-  ASSERT_EQ(perf_run("../test/2.txt"), 6);
+  ASSERT_EQ(perf_run("../test/2.txt"), 7);
 }
 
 TEST(QQ, NoRequests) {
@@ -82,7 +82,7 @@ TEST(QQ, AllQQifs) {
 }
 
 TEST(PERF, AllQQifs) {
-  ASSERT_EQ(perf_run("../test/4.txt"), 15);
+  ASSERT_EQ(perf_run("../test/4.txt"), 16);
 }
 
 TEST(QQ, BigTestWithNegativeNumbers) {
@@ -118,7 +118,7 @@ TEST(PERF, CycleRequests) {
 }
 
 TEST(PERF, SimpleTest) {
-  EXPECT_EQ(perf_run("../test/9.txt"), 6);
+  EXPECT_EQ(perf_run("../test/9.txt"), 7);
 }
 
 
