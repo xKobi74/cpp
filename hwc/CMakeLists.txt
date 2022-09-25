@@ -2,16 +2,16 @@ cmake_minimum_required (VERSION 3.16)
 project ("HWC" VERSION 1.0 LANGUAGES CXX) 
 
 set (INCLUDE 
-    include
+  include
 )
 
 set (SOURCES 
-	source/main.cc
+  source/main.cc
 )
 
 set (COMPILE_SETTINGS
-    -O2
-    -DNDEBUG
+  -O2
+  -DNDEBUG
 )
 
 set (OUTS

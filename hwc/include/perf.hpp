@@ -10,7 +10,6 @@ namespace cache {
 
 template <typename KeyT> class perf_alg_t {
 	int capacity, requestscount;
-	int maxvalue;
 	std::unordered_map<KeyT, std::queue<KeyT>> hashmap;
 	std::set<KeyT> set;
 	int hits;
@@ -21,6 +20,8 @@ template <typename KeyT> class perf_alg_t {
 		int ind;
 		pair_t(KeyT k, int i) : key(k), ind(i) {}
 		bool operator<(const pair_t &rhs) const {
+			if (ind == rhs.ind)
+				return key < rhs.key;
 			return ind < rhs.ind;
     	}
     	void print() {
@@ -29,13 +30,11 @@ template <typename KeyT> class perf_alg_t {
 	};
 	std::set<pair_t> setp;
 
-
 public:
 
 	perf_alg_t(int cap, std::vector<KeyT> &input, KeyT noth) : capacity(cap), hits(0), nothing(noth) {
 		assert(cap > 0);
 		requestscount = input.size();
-		maxvalue = requestscount;
 		int key;
 		for (int i = 0; i < requestscount; ++i) {
 			key = input[i];
@@ -47,38 +46,50 @@ public:
 		return set.size() == capacity;
 	}
 
-	KeyT nextplace(KeyT const key) { // only maxvalue value changes
+	KeyT nextplace(KeyT const key) const {
 		assert(hashmap.find(key) != hashmap.end());
 		auto q = hashmap.find(key)->second;
 		if (q.empty()) {
-			return maxvalue++;
+			return requestscount;
 		}
 		return q.front();
 	}
 
-	void update(KeyT key) {
-		struct pair_t oldpair(key, nextplace(key));
+	void delete_key_previos_info(KeyT key) {
+		struct pair_t previospair(key, nextplace(key));
 		hashmap[key].pop();
 		if (set.find(key) != set.end()) {
 			set.erase(key);
-			setp.erase(oldpair);
+			setp.erase(previospair);
 			++hits;
 		}
+	}
+
+	void delete_extra_element() {
 		if (isfull()) {
-			pair_t extrapair = *setp.rbegin(); 
-			set.erase(extrapair.key);
-			setp.erase(extrapair);
+			pair_t extrapairptr = *setp.rbegin(); 
+			set.erase(extrapairptr.key);
+			setp.erase(extrapairptr);
 		}
+	}
+
+	void add_key_info(KeyT key) {
 		struct pair_t pair(key, nextplace(key));
 		set.insert(key);
 		setp.insert(pair);
+	}
+
+	void update(KeyT key) {
+		delete_key_previos_info(key);
+		delete_extra_element();
+		add_key_info(key);
 	}
 
 	int hitscount() const {
 		return hits;
 	}
 
-	void print() { // only maxvalue value changes
+	void print() const { 
 		std::cout << "SET: ";
 		for (auto it = set.begin(); it != set.end(); ++it)
 			std::cout << *it << "(" << nextplace(*it) << ")" << " ";
