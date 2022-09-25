@@ -117,6 +117,10 @@ TEST(PERF, CycleRequests) {
   EXPECT_EQ(perf_run("../test/8.txt"), 810);
 }
 
+TEST(PERF, SimpleTest) {
+  EXPECT_EQ(perf_run("../test/9.txt"), 6);
+}
+
 
 
 int main(int argc, char **argv)
